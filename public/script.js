@@ -45,6 +45,31 @@ bookForm.addEventListener('submit', async (e) => {
 
     const ebookInput = document.getElementById('ebook');
     const nomorbukuInput = document.getElementById('nomorbuku').value;
+    document.getElementById('form-buku').addEventListener('submit', async (e) => {
+        e.preventDefault(); // Ini penting supaya nggak nge-refresh
+      
+        const judul = document.getElementById('judul').value;
+        const penulis = document.getElementById('penulis').value;
+        const lokasi = document.getElementById('lokasi').value;
+      
+        console.log({ judul, penulis, lokasi });
+      
+        try {
+          const res = await fetch('/books', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ judul, penulis, lokasi })
+          });
+      
+          const data = await res.json();
+          console.log(data);
+        } catch (err) {
+          console.error('Gagal menambahkan buku:', err);
+        }
+      });
+      
     const formData = new FormData();
 
     // Validasi sederhana di frontend
@@ -110,6 +135,7 @@ bookForm.addEventListener('submit', async (e) => {
         showNotification(error.message, 'error');
     }
 });
+
 
 // Fungsi untuk menampilkan notifikasi (opsional)
 function showNotification(message, type) {
@@ -205,7 +231,7 @@ async function fetchLocations() {
         locations.forEach(location => {
             const option = document.createElement('option');
             option.value = location._id; // Gunakan ID lokasi sebagai value
-            option.textContent = location.lokasi; // Tampilkan nama lokasi
+            option.textContent = location.nama_lokasi; // Sesuai field dari models/location.js
             locationSelect.appendChild(option);
         });
     } catch (error) {

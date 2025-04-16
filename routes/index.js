@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Book = require('../models/book');
+const { Location } = require('../models/location'); 
 
 router.get('/', async (req, res) => {
     if (!req.session.user) {
@@ -9,9 +10,10 @@ router.get('/', async (req, res) => {
 
     try {
         const books = await Book.find().sort('name');
-        res.render('index', { books }); //  render views/index.ejs
+        const locations = await Location.find().sort('nama_lokasi');
+        res.render('index', { books, locations });
     } catch (error) {
-        console.error("Error mengambil buku:", error);
+        console.error("Error mengambil data:", error);
         res.status(500).send("Terjadi kesalahan.");
     }
 });

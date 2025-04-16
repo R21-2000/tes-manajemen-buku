@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const Location = require('../models/location');
+const Location = require('./location');
 
 const Book = mongoose.model('Book', new mongoose.Schema({
     nomorbuku: {
@@ -22,7 +22,7 @@ const Book = mongoose.model('Book', new mongoose.Schema({
     },
     lokasi: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'location',
+        ref: 'Lokasi',
         required: true
     },
     filepath: {

@@ -1,112 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manajemen Buku</title>
-    <link rel="stylesheet" href="/style/index.css"> <!-- Jika ada CSS -->
-    <link rel="stylesheet" href="../public/style/index.css"> <!-- Jika ada CSS -->
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manajemen Buku</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/style/index.css">
 </head>
 <body>
-    <div class="container">
-
-        <div class="header">
-            <h1>Manajemen Buku</h1>
-
-            <div class="right">
-                <a type="button" class="a btn  btn-light btn-outline-warning" href="/auth/user">User Page</a>
-                <a type="button" class="a btn  btn-light btn-outline-danger" href="/auth/logout">Log Out</a>
-            </div>
-        </div>
-
-        <div class="search">
-            <input class="field-search" type="text" id="searchInput" placeholder="Cari buku atau penulis...">
-        </div>
-
-        <div class="main">
-            <table id="booksTable" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nomor Buku</th>
-                        <th>Nama Buku</th>
-                        <th>Jumlah Halaman</th>
-                        <th>Penulis</th>
-                        <th>Lokasi</th>
-                        <th>EBook</th>
-                        <th>Aksi</th>
-                        
-                    </tr>
-                </thead>
-                <tbody>
-                    <% books.forEach(book => { %>
-                        <tr>
-                            <td><%= book.nomorbuku %></td>
-                            <td><%= book.name %></td>
-                            <td><%= book.halaman %></td>
-                            <td><%= book.penulis %></td>
-                            <td><%= book.lokasi %></td>
-                            <td>
-                                <% if (book.filepath) { %>
-                                    <a href="<%= book.filepath.replace(/\\/g, '/') %>" target="_blank" rel="noopener noreferrer">Baca PDF</a>
-                                  Tidak ada
-                                <% } %>
-                              </td>
-                            <td>
-                                
-                            </td>
-                        </tr>
-                    <% }) %>
-                </tbody>
-            </table>
-        </div>
+  <div class="container">
+    <div class="header">
+      <h1>Manajemen Buku</h1>
+      <div class="right">
+        <a type="button" class="btn btn-outline-warning" href="/auth/user">User Page</a>
+        <a type="button" class="btn btn-outline-danger" href="/auth/logout">Log Out</a>
+      </div>
     </div>
 
-
-
-
-    <!-- dibawah itu formulir yang di hide -->
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary fixed-bottom" data-bs-toggle="modal" data-bs-target="#formulir">
-        Tambah buku
-    </button>
-    
-    <!-- Modal -->
-    <div class="modal fade" id="formulir" tabindex="-1" aria-labelledby="formulir" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Silahkan Lengkapi Data</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="bookForm" enctype="multipart/form-data">
-                    <input type="text" id="nomorbuku" placeholder="Nomor Buku" required>
-                    <input type="text" id="name" placeholder="Nama Buku" required>
-                    <input type="number" id="halaman" placeholder="Jumlah Halaman" required>
-                    <input type="text" id="penulis" placeholder="Nama Penulis" required>
-                    <input type="text" id="lokasi" placeholder="Lokasi Buku" required>
-                    <select name="lokasi" id="subject" onchange="toggleLokasiInput(this)">
-                        <option value="">Pilih Lokasi</option>
-                        <% books.forEach(book => { %>
-                            <option value="<%= book.lokasi %>"><%= book.lokasi %></option>
-                        <% }) %>
-                        <option value="new">Tambah Lokasi Baru</option>
-                    </select>
-                    <input type="text" id="lokasiInput" placeholder="Lokasi Baru" style="display: none;">
-                    <input type="file" id="ebook" name="ebook" placeholder="EBook (jika ada)" accept=".pdf, .epub, .mobi">
-                    <button type="submit" class="btn btn-primary" id="submitButton" data-bs-dismiss="modal">Tambah Buku</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-        </div>
+    <div class="search">
+      <input class="field-search form-control" type="text" id="searchInput" placeholder="Cari buku atau penulis...">
     </div>
 
-    <script src="/script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <div class="main">
+      <table id="booksTable" class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nomor Buku</th>
+            <th>Nama Buku</th>
+            <th>Jumlah Halaman</th>
+            <th>Penulis</th>
+            <th>Lokasi</th>
+            <th>EBook</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% books.forEach(book => { %>
+            <tr>
+              <td><%= book.nomorbuku %></td>
+              <td><%= book.name %></td>
+              <td><%= book.halaman %></td>
+              <td><%= book.penulis %></td>
+              <td><%= book.lokasi_nama %></td>
+              <td>
+                <% if (book.filepath) { %>
+                  <a href="<%= book.filepath.replace(/\\/g, '/') %>" target="_blank">Baca PDF</a>
+                <% } else { %>
+                  Tidak ada
+                <% } %>
+              </td>
+              <td>
+                <!-- Aksi bisa ditambahkan -->
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Button trigger untuk tambah buku -->
+  <button type="button" class="btn btn-primary fixed-bottom" data-bs-toggle="modal" data-bs-target="#formulir">
+    Tambah Buku
+  </button>
+
+  <!-- Modal Tambah Buku -->
+  <div class="modal fade" id="formulir" tabindex="-1" aria-labelledby="formulirLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="bookForm" enctype="multipart/form-data">
+          <div class="modal-header">
+            <h5 class="modal-title" id="formulirLabel">Silahkan Lengkapi Data</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <input type="text" class="form-control mb-2" id="nomorbuku" placeholder="Nomor Buku" required>
+            <input type="text" class="form-control mb-2" id="name" placeholder="Nama Buku" required>
+            <input type="number" class="form-control mb-2" id="halaman" placeholder="Jumlah Halaman" required>
+            <input type="text" class="form-control mb-2" id="penulis" placeholder="Nama Penulis" required>
+
+            <label for="lokasi">Lokasi Buku</label>
+            <select class="form-select mb-2" id="lokasi" required>
+              <option value="">Pilih Lokasi</option>
+              <% locations.forEach(loc => { %>
+                <option value="<%= loc._id %>"><%= loc.nama_lokasi %></option>
+              <% }) %>
+            </select>
+
+            <!-- Tombol untuk buka modal tambah lokasi -->
+            <button type="button" class="btn btn-secondary mb-2" data-bs-toggle="modal" data-bs-target="#lokasiModal">
+              Tambah Lokasi Baru
+            </button>
+
+            <input type="file" class="form-control mb-2" id="ebook" accept=".pdf,.epub,.mobi">
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Tambah Buku</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Tambah Lokasi -->
+  <div class="modal fade" id="lokasiModal" tabindex="-1" aria-labelledby="lokasiModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="lokasiForm">
+            <input type="text" class="form-control mb-2" id="id_lokasi" placeholder="ID Lokasi (unik)" required>
+            <input type="text" class="form-control mb-2" id="nama_lokasi" placeholder="Nama Lokasi" required>
+            <button type="submit" class="btn btn-success">Simpan Lokasi</button>
+          </form>          
+      </div>
+    </div>
+  </div>
+  <script>
+    document.getElementById('lokasiForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+  
+      const id_lokasi = document.getElementById('id_lokasi').value.trim();
+      const nama_lokasi = document.getElementById('nama_lokasi').value.trim();
+  
+      console.log({ id_lokasi, nama_lokasi }); // Debugging log
+  
+      const response = await fetch('/api/locations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_lokasi, nama_lokasi })
+      });
+  
+      if (response.ok) {
+        location.reload();
+      } else {
+        const errorText = await response.text();
+        alert('Gagal menambah lokasi: ' + errorText);
+      }
+    });
+  </script>
+  
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
